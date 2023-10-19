@@ -1,0 +1,19 @@
+﻿@page "/"
+@inject Shared.RecipeService RecipeService
+<PageTitle>Home</PageTitle>
+
+
+@foreach (var recipe in _recipes)
+{
+    <RecipeCard Recipe="recipe" />
+}
+
+@code {
+    private IEnumerable<Shared.Models.Recipe> _recipes;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _recipes = await RecipeService.GetRecipesAsync(null);
+    }
+}
