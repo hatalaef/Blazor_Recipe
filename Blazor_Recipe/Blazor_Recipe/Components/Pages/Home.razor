@@ -3,26 +3,29 @@
 @inject Shared.RecipeService RecipeService
 <PageTitle>Home</PageTitle>
 
+@attribute [RenderModeInteractiveServer]
 @attribute [StreamRendering(true)]
 
+<Blazor_Recipe.Client.Components.RecipeSearch OnClickCallback="@GetRecipes" />
 @if (_recipes is null)
 {
     <MudText>Loading...</MudText>
 }
 else
 {
-    <Blazor_Recipe.Client.Components.RecipeSearch />
+
     @foreach (var recipe in _recipes)
     {
         <RecipeCard Recipe="recipe" />
     }
 }
 @code {
-    private IEnumerable<Shared.Models.Recipe> _recipes;
+    private IEnumerable<Shared.Models.Recipe> _recipes = Enumerable.Empty<Shared.Models.Recipe>();
 
 
-    protected override async Task OnInitializedAsync()
+    private async Task GetRecipes(string ingredients)
     {
-        _recipes = (await RecipeService.GetRecipesAsync_Fake(new List<string> { "blueberry" })).ToList();
+        _recipes = (await RecipeService.GetRecipesAsync_Fake(ingredients)).ToList();
+
     }
 }

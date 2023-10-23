@@ -1,20 +1,4 @@
-﻿@* <MudCard Outlined="true">
-
-    <MudCardHeader><MudLink Typo="Typo.h5" Href="@Recipe.Url" Target="_blank">@Recipe.Name </MudLink></MudCardHeader>
-        <MudCardContent Class="d-flex flex-wrap-reverse flex-sm-nowrap gap-1 ">
-
-            <MudContainer>
-                <MudText Typo="Typo.body1">@((MarkupString)Recipe.Summary)</MudText>
-            </MudContainer>
-            <MudDivider Vertical="true" FlexItem="true" DividerType="DividerType.Middle" />
-            <MudContainer>
-                <MudImage Src=@Recipe.ImageUrl Class="recipe-image" Style="@($"border-color:{Theme.Palette.PrimaryDarken};")" Fluid="true" />
-            </MudContainer>
-        </MudCardContent>
-
-    </MudCard> *@
-
-<MudCard Outlined="true">
+﻿<MudCard Outlined="true">
 
     <MudCardHeader><MudLink Typo="Typo.h5" Href="@Recipe.Url" Target="_blank">@Recipe.Name </MudLink></MudCardHeader>
         <MudCardContent>

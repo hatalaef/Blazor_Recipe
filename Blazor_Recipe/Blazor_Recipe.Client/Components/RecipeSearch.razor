@@ -1,11 +1,20 @@
 ﻿@attribute [RenderModeInteractiveAuto]
 
-<MudPaper Class="pa-4 mud-height-full">
-    <MudForm>
+<MudPaper Outlined="true" Class="pa-4 mud-height-full justify-space-between">
+    <MudForm Class="d-flex align-end gap-4">
         <MudTextField T="string" Label="Search"></MudTextField>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Search</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@((_) => DoSomething(_))">Search</MudButton>
     </MudForm>
 </MudPaper>
 @code {
+
+    [Parameter]
+    public EventCallback<string> OnClickCallback { get; set; }
+
+    public async Task DoSomething(MouseEventArgs _)
+    {
+        Console.WriteLine("here");
+        await OnClickCallback.InvokeAsync("milk");
+    }
 
 }
