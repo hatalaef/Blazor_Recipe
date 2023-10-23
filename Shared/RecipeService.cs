@@ -1,9 +1,19 @@
 ﻿using Shared.Models;
+using System.Net.Http.Json;
 
 namespace Shared
 {
     public class RecipeService
     {
+        private readonly HttpClient _httpClient;
+
+        private const int MaxRecipes = 50;
+
+        public RecipeService(HttpClient client)
+        {
+            _httpClient = client;
+        }
+
         private const string apiKey = "c71c3bdaa5e645a5b0b283e0a0d6ed57";
         private string url = $@"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&includeIngredients=milk&addRecipeInformation=true";
 
@@ -79,15 +89,40 @@ namespace Shared
             }
         ];
 
-        public async Task<IEnumerable<Recipe>> GetRecipesAsync(List<string> ingredients)
+        public async Task<IEnumerable<Recipe>> GetRecipesAsync_Fake(List<string> ingredients)
         {
+            await Task.Delay(1000 * 1);
             return await Task.FromResult(_responses.Select(x => new Recipe
             {
                 Id = x.Id,
                 Name = x.Title,
                 Summary = x.Summary,
-                Url = x.SpoonacularSourceUrl
+                Url = x.SpoonacularSourceUrl,
+                ImageUrl = x.Image
             }).ToList());
+        }
+
+        public async Task<IEnumerable<Recipe>> GetRecipesAsync(List<string> ingredients)
+        {
+            if (ingredients?.Count == 0) return Enumerable.Empty<Recipe>();
+
+            string ingredientList = string.Join(",", ingredients);
+            string theUrl = $@"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&addRecipeInformation=true&fillIngredients=true&includeIngredients={ingredientList}&number={MaxRecipes}";
+            using HttpRequestMessage message = new(HttpMethod.Get, new Uri(theUrl));
+
+            HttpResponseMessage response = await _httpClient.SendAsync(message);
+
+            response.EnsureSuccessStatusCode();
+            RecipeListResponse result = await response.Content.ReadFromJsonAsync<RecipeListResponse>();
+
+            return result.Results.Select(x => new Recipe
+            {
+                Id = x.Id,
+                Name = x.Title,
+                Summary = x.Summary,
+                Url = x.SpoonacularSourceUrl,
+                ImageUrl = x.Image
+            });
         }
     }
 }

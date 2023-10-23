@@ -1,19 +1,28 @@
 ﻿@page "/"
+@using Blazor_Recipe.Components.Components
 @inject Shared.RecipeService RecipeService
 <PageTitle>Home</PageTitle>
 
+@attribute [StreamRendering(true)]
 
-@foreach (var recipe in _recipes)
+@if (_recipes is null)
 {
-    <RecipeCard Recipe="recipe" />
+    <MudText>Loading...</MudText>
 }
-
+else
+{
+    <Blazor_Recipe.Client.Components.RecipeSearch />
+    @foreach (var recipe in _recipes)
+    {
+        <RecipeCard Recipe="recipe" />
+    }
+}
 @code {
     private IEnumerable<Shared.Models.Recipe> _recipes;
 
 
     protected override async Task OnInitializedAsync()
     {
-        _recipes = await RecipeService.GetRecipesAsync(null);
+        _recipes = (await RecipeService.GetRecipesAsync_Fake(new List<string> { "blueberry" })).ToList();
     }
 }

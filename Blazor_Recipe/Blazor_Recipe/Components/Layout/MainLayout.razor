@@ -1,16 +1,21 @@
 ﻿@inherits LayoutComponentBase
 
-<header>The header </header>
-<main>
-    @Body
-</main>
-<footer>
-    &copy; Emily Hatala @DateTime.UtcNow.Year
-</footer>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
+<MudLayout>
+    <MudAppBar Color="Color.Primary" WrapContent="true"><MudText Typo="Typo.h4">Some Kind of Awesome Recipe App</MudText></MudAppBar>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
-<div id="blazor-error-ui">
+@* <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+ *@

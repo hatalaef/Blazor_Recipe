@@ -1,6 +1,6 @@
 using Blazor_Recipe.Client.Pages;
 using Blazor_Recipe.Components;
-using Material.Blazor;
+using MudBlazor.Services;
 using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +11,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 //services
-builder.Services.AddMBServices();
-builder.Services.AddScoped(typeof(RecipeService));
+builder.Services.AddMudServices();
+builder.Services.AddHttpClient<RecipeService>();
 
 var app = builder.Build();
 

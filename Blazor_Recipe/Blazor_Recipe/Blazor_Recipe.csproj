@@ -9,8 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.csproj" />
     <ProjectReference Include="..\Blazor_Recipe.Client\Blazor_Recipe.Client.csproj" />
-    <PackageReference Include="Material.Blazor" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.2.23480.2" />
+    <PackageReference Include="MudBlazor" Version="6.11.0" />
   </ItemGroup>
 
 </Project>

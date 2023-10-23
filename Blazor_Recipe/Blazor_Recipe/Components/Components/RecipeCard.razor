@@ -1,0 +1,49 @@
+﻿@* <MudCard Outlined="true">
+
+    <MudCardHeader><MudLink Typo="Typo.h5" Href="@Recipe.Url" Target="_blank">@Recipe.Name </MudLink></MudCardHeader>
+        <MudCardContent Class="d-flex flex-wrap-reverse flex-sm-nowrap gap-1 ">
+
+            <MudContainer>
+                <MudText Typo="Typo.body1">@((MarkupString)Recipe.Summary)</MudText>
+            </MudContainer>
+            <MudDivider Vertical="true" FlexItem="true" DividerType="DividerType.Middle" />
+            <MudContainer>
+                <MudImage Src=@Recipe.ImageUrl Class="recipe-image" Style="@($"border-color:{Theme.Palette.PrimaryDarken};")" Fluid="true" />
+            </MudContainer>
+        </MudCardContent>
+
+    </MudCard> *@
+
+<MudCard Outlined="true">
+
+    <MudCardHeader><MudLink Typo="Typo.h5" Href="@Recipe.Url" Target="_blank">@Recipe.Name </MudLink></MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem sm="7" xs="9">
+                    <MudText Typo="Typo.body1"> @((MarkupString)Recipe.Summary)</MudText>
+                </MudItem>
+                <MudItem sm="1" xs="0">
+                    <MudDivider Class="divider" Vertical="true" DividerType="DividerType.Middle" />
+                </MudItem>
+                <MudItem sm="4" xs="3">
+                    <MudImage Src=@Recipe.ImageUrl Class="recipe-image" Style="@($"border-color:{Theme.Palette.PrimaryDarken};")" Fluid="true" />
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+
+    </MudCard>
+
+
+    @code {
+
+    [Parameter]
+    public Shared.Models.Recipe Recipe { get; set; }
+
+    private MudTheme Theme = new MudTheme();
+
+    protected override void OnParametersSet()
+    {
+        ArgumentNullException.ThrowIfNull(Recipe);
+    }
+
+}
