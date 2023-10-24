@@ -1,4 +1,5 @@
-﻿<MudCard Outlined="true">
+﻿@attribute [RenderModeInteractiveAuto]
+<MudCard Outlined="true">
 
     <MudCardHeader><MudLink Typo="Typo.h5" Href="@Recipe.Url" Target="_blank">@Recipe.Name </MudLink></MudCardHeader>
         <MudCardContent>
@@ -11,6 +12,15 @@
                 </MudItem>
                 <MudItem sm="4" xs="3">
                     <MudImage Src=@Recipe.ImageUrl Class="recipe-image" Style="@($"border-color:{Theme.Palette.PrimaryDarken};")" Fluid="true" />
+                </MudItem>
+                <MudItem xs="4">
+                    <IngredientList ListName="Used Ingredients" Ingredients="@Recipe.UsedIngredients" />
+                </MudItem>
+                <MudItem xs="4">
+                    <IngredientList ListName="Missing Ingredients" Ingredients="@Recipe.MissedIngredients" />
+                </MudItem>
+                <MudItem xs="4">
+                    <IngredientList ListName="Unused Ingredients" Ingredients="@Recipe.UnusedIngredients" />
                 </MudItem>
             </MudGrid>
         </MudCardContent>

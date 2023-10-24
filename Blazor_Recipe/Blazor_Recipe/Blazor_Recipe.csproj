@@ -7,10 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="SampleResponse.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="SampleResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.csproj" />
     <ProjectReference Include="..\Blazor_Recipe.Client\Blazor_Recipe.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="MudBlazor" Version="6.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Components\" />
   </ItemGroup>
 
 </Project>

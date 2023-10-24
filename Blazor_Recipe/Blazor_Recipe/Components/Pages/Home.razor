@@ -1,12 +1,11 @@
 ﻿@page "/"
-@using Blazor_Recipe.Components.Components
 @inject Shared.RecipeService RecipeService
 <PageTitle>Home</PageTitle>
 
 @attribute [RenderModeInteractiveServer]
 @attribute [StreamRendering(true)]
 
-<Blazor_Recipe.Client.Components.RecipeSearch OnClickCallback="@GetRecipes" />
+<Blazor_Recipe.Client.Components.RecipeSearch SearchIngredientsCallback="@GetRecipes" />
 @if (_recipes is null)
 {
     <MudText>Loading...</MudText>
@@ -20,12 +19,15 @@ else
     }
 }
 @code {
-    private IEnumerable<Shared.Models.Recipe> _recipes = Enumerable.Empty<Shared.Models.Recipe>();
+    private IEnumerable<Shared.Models.Recipe>? _recipes = Enumerable.Empty<Shared.Models.Recipe>();
 
 
-    private async Task GetRecipes(string ingredients)
+    private async Task GetRecipes(List<string> ingredients)
     {
+        Console.WriteLine($"{nameof(GetRecipes)}: Got ingredients: {string.Join(";", ingredients)}");
+        _recipes = null;
         _recipes = (await RecipeService.GetRecipesAsync_Fake(ingredients)).ToList();
+        //_recipes = (await RecipeService.GetRecipesAsync(ingredients)).ToList();
 
     }
 }
