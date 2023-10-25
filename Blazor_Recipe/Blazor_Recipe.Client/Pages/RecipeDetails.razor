@@ -1,0 +1,39 @@
+﻿@page "/details/{RecipeName}"
+@attribute [RenderModeInteractiveAuto]
+@using Shared.Models
+
+<PageTitle>@RecipeName</PageTitle>
+
+
+    @if (!showImage)
+{
+    <MudButton IconSize="Size.Large" ButtonType="ButtonType.Button" OnClick="ButtonClick" Color="Color.Primary" Variant="Variant.Filled">Click me</MudButton>
+}
+else
+{
+    <div>
+        <div Style="position: absolute; top: 40%; left:50%; transform: translate(-50%, -50%);">
+            <MudText Typo="Typo.h4" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Bon Appetit!</MudText>
+            <MudText Typo="Typo.h5" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Enjoy your @RecipeName</MudText>
+            </div>
+
+            <MudImage Elevation="3" Src="images/food-366875.jpg" Fluid="true" Height="3000" Width="5000" />
+        </div>
+}
+@code {
+    [Parameter]
+    public string RecipeName { get; set; }
+    private bool showImage = false;
+
+    protected override void OnParametersSet()
+    {
+        ArgumentNullException.ThrowIfNull(RecipeName);
+    }
+
+    private void ButtonClick()
+    {
+        Console.WriteLine("Clicking a button. I'm on the client!");
+        showImage = true;
+    }
+
+}

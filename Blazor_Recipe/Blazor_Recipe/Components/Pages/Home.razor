@@ -5,22 +5,33 @@
 @attribute [RenderModeInteractiveServer]
 @attribute [StreamRendering(true)]
 
-<Blazor_Recipe.Client.Components.RecipeSearch SearchIngredientsCallback="@GetRecipes" />
-@if (_recipes is null)
-{
-    <MudText>Loading...</MudText>
-}
-else
-{
+<MudContainer MaxWidth="MaxWidth.Large">
 
-    @foreach (var recipe in _recipes)
+    <RecipeSearch SearchIngredientsCallback="@GetRecipes" />
+    <div class="mt-8" />
+    @if (_recipes is null)
     {
-        <RecipeCard Recipe="recipe" />
+        <MudText Typo="Typo.h5">Loading Recipes...</MudText>
     }
-}
-@code {
-    private IEnumerable<Shared.Models.Recipe>? _recipes = Enumerable.Empty<Shared.Models.Recipe>();
+    else
+    {
 
+        @foreach (var recipe in _recipes)
+        {
+            <div class="mt-4">
+                <RecipeCard Recipe="recipe" />
+            </div>
+        }
+    }
+</MudContainer>
+
+@code {
+    private IEnumerable<Shared.Models.Recipe>? _recipes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _recipes = Enumerable.Empty<Shared.Models.Recipe>();
+    }
 
     private async Task GetRecipes(List<string> ingredients)
     {

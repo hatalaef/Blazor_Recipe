@@ -14,5 +14,7 @@
         public int MissedIngredientCount { get; set; }
         public IngredientResponse[] MissedIngredients { get; set; }
         public IngredientResponse[] UnusedIngredients { get; set; }
+
+        public int AggregateLikes { get; set; }
     }
 }

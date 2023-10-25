@@ -8,7 +8,7 @@ namespace Shared
     {
         private readonly HttpClient _httpClient;
 
-        private const int MaxRecipes = 50;
+        private const int MaxRecipes = 15;
 
         public RecipeService(HttpClient client)
         {
@@ -41,7 +41,8 @@ namespace Shared
             if (ingredients?.Count == 0) return Enumerable.Empty<Recipe>();
 
             string ingredientList = string.Join(",", ingredients);
-            string theUrl = $@"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&addRecipeInformation=true&fillIngredients=true&includeIngredients={ingredientList}&number={MaxRecipes}";
+            string theUrl = $@"https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&fillIngredients=true&sort=max-used-ingredients&instructionsRequired=true&limitLicense=true&number={MaxRecipes}&apiKey={apiKey}&includeIngredients={ingredientList}";
+
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Making http request: {theUrl}");
 
             using HttpRequestMessage message = new(HttpMethod.Get, new Uri(theUrl));
@@ -55,7 +56,8 @@ namespace Shared
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Made api call with ingredients: {string.Join(";", ingredients)}");
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Recieved {result.Results.Count()} results.");
 
-            return result.Results.Select(x => MapRecipe(x));
+            return result.Results.OrderByDescending(x => x.UsedIngredientCount).ThenBy(x => x.MissedIngredientCount).ThenByDescending(x => x.AggregateLikes)
+                .Select(x => MapRecipe(x));
         }
 
         private static Recipe MapRecipe(RecipeResponse response)

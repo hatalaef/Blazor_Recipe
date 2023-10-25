@@ -1,20 +1,73 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider DefaultScrollbar="true" Theme="myCustomTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Color="Color.Primary" WrapContent="true"><MudText Typo="Typo.h4">Some Kind of Awesome Recipe App</MudText></MudAppBar>
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Medium">
+    <MudAppBar Color="Color.Primary" Elevation="1">
+        <MudText Typo="Typo.h4" Color="Color.Inherit">Some Kind of Awesome Recipe App</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Home" Color="Color.Inherit" Edge="Edge.End" Href="/" />
+    </MudAppBar>
+    <MudMainContent Class="mt-10">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
             @Body
-            <MudScrollToTop TopOffset="50">
-                <MudFab Color="Color.Tertiary" Icon="@Icons.Material.Filled.ArrowCircleUp" />
-            </MudScrollToTop>
         </MudContainer>
-
+        <footer class="mud-theme-primary pa-4 ma-4 rounded">
+            <MudText>
+                <MudIcon Style="vertical-align: text-bottom" Icon="@Icons.Custom.Uncategorized.Baguette" />
+                Emily Hatala
+                <MudIcon Style="vertical-align: text-bottom" Icon="@Icons.Custom.Uncategorized.Baguette" />
+            </MudText>
+        </footer>
     </MudMainContent>
 
 </MudLayout>
+
+@code {
+    private MudTheme myCustomTheme = new MudTheme()
+        {
+            Palette = new PaletteLight
+            {
+                Primary = "#782377",
+                PrimaryLighten = "B765A9",
+                PrimaryDarken = "#6f1376",
+                Background = "#dfbcd9",
+                Surface = "#f2e4ef",
+                Divider = "#782377"
+            },
+            Typography = new Typography
+            {
+                Body1 = new Body1
+                {
+                    FontSize = "1.2rem"
+                },
+                Body2 = new Body2
+                {
+                    FontSize = "1.0rem"
+                },
+                Caption = new Caption
+                {
+                    FontSize = "1.0rem"
+                },
+                Button = new Button
+                {
+                    FontSize = "1.1rem"
+                },
+                Overline = new Overline
+                {
+                    FontSize = "1.0rem"
+                },
+                Subtitle1 = new Subtitle1
+                {
+                    FontSize = "1.1rem"
+                },
+                Subtitle2 = new Subtitle2
+                {
+                    FontSize = "1.0rem"
+                },
+            }
+        };
+}
 
