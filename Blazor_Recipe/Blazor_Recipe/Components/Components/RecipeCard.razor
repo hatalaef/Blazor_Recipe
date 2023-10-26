@@ -5,15 +5,15 @@
         </MudCardHeader>
         <MudCardContent>
             <MudGrid>
-                <MudItem sm="7" xs="9">
+                <MudItem sm="6" xs="9">
                     <MudText Typo="Typo.body1"> @((MarkupString)Recipe.Summary)</MudText>
                 </MudItem>
                 <MudItem sm="1" xs="0">
                     <MudDivider Class="divider" Vertical="true" DividerType="DividerType.Middle" />
                 </MudItem>
-                <MudItem sm="4" xs="3">
+                <MudItem sm="5" xs="3">
                     <MudImage Src=@Recipe.ImageUrl Class="recipe-image" Style="@($"border-color:var(--mud-palette-primary-darken);")" Fluid="true" />
-                    <MudLink Href="@($"/details/{Recipe.Name}")" Underline="Underline.Hover">
+                    <MudLink Href="@($"/details/{Recipe.Id}/{Recipe.Name}")" Underline="Underline.Hover">
                         <MudText Align="Align.Center">Details</MudText>
                     </MudLink>
                 </MudItem>

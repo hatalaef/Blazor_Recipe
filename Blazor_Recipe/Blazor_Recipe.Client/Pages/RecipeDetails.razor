@@ -1,4 +1,4 @@
-﻿@page "/details/{RecipeName}"
+﻿@page "/details/{RecipeId:int}/{RecipeName}"
 @attribute [RenderModeInteractiveAuto]
 @using Shared.Models
 
@@ -13,21 +13,28 @@ else
 {
     <div>
         <div Style="position: absolute; top: 40%; left:50%; transform: translate(-50%, -50%);">
+            <MudImage Src="@Shared.HelperService.GetImageUrl(RecipeId)" Class="d-block" Style="margin-left: auto; margin-right: auto;" Fluid="true" />
             <MudText Typo="Typo.h4" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Bon Appetit!</MudText>
             <MudText Typo="Typo.h5" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Enjoy your @RecipeName</MudText>
             </div>
 
             <MudImage Elevation="3" Src="images/food-366875.jpg" Fluid="true" Height="3000" Width="5000" />
+
         </div>
 }
 @code {
     [Parameter]
     public string RecipeName { get; set; }
+    [Parameter]
+    public int RecipeId { get; set; }
+
     private bool showImage = false;
 
     protected override void OnParametersSet()
     {
         ArgumentNullException.ThrowIfNull(RecipeName);
+        ArgumentNullException.ThrowIfNull(RecipeId);
+
     }
 
     private void ButtonClick()

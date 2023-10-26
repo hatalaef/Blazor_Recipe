@@ -8,8 +8,12 @@
 <MudContainer MaxWidth="MaxWidth.Large">
 
     <RecipeSearch SearchIngredientsCallback="@GetRecipes" />
-    <div class="mt-8" />
-    @if (_recipes is null)
+    <MudRadioGroup @bind-SelectedOption="@useFakeApiCall">
+        <MudRadio Option="@(true)" Color="Color.Primary">Use Fake API Call</MudRadio>
+        <MudRadio Option="@(false)" Color="Color.Primary">Use Real API Call (has a daily quota) @apiQuota</MudRadio>
+        </MudRadioGroup>
+        <div class="mt-8" />
+        @if (_recipes is null)
     {
         <MudText Typo="Typo.h5">Loading Recipes...</MudText>
     }
@@ -27,6 +31,8 @@
 
 @code {
     private IEnumerable<Shared.Models.Recipe>? _recipes;
+    private bool useFakeApiCall { get; set; } = true;
+    private string? apiQuota { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,8 +43,16 @@
     {
         Console.WriteLine($"{nameof(GetRecipes)}: Got ingredients: {string.Join(";", ingredients)}");
         _recipes = null;
-        _recipes = (await RecipeService.GetRecipesAsync_Fake(ingredients)).ToList();
-        //_recipes = (await RecipeService.GetRecipesAsync(ingredients)).ToList();
+        if (useFakeApiCall)
+        {
+            _recipes = (await RecipeService.GetRecipesAsync_Fake(ingredients)).ToList();
+        }
+        else
+        {
+            var result = await RecipeService.GetRecipesAsync(ingredients);
+            _recipes = result.Recipes;
+            apiQuota = result.ApiQuota != null ? $": {result.ApiQuota}/150 left" : null;
+        }
 
     }
 }

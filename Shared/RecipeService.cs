@@ -36,9 +36,9 @@ namespace Shared
             return result.Results.Select(x => MapRecipe(x));
         }
 
-        public async Task<IEnumerable<Recipe>> GetRecipesAsync(List<string> ingredients)
+        public async Task<(IEnumerable<Recipe> Recipes, double? ApiQuota)> GetRecipesAsync(List<string> ingredients)
         {
-            if (ingredients?.Count == 0) return Enumerable.Empty<Recipe>();
+            if (ingredients?.Count == 0) return (Enumerable.Empty<Recipe>(), null);
 
             string ingredientList = string.Join(",", ingredients);
             string theUrl = $@"https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&fillIngredients=true&sort=max-used-ingredients&instructionsRequired=true&limitLicense=true&number={MaxRecipes}&apiKey={apiKey}&includeIngredients={ingredientList}";
@@ -50,14 +50,16 @@ namespace Shared
             HttpResponseMessage response = await _httpClient.SendAsync(message);
 
             response.EnsureSuccessStatusCode();
-            string something = await response.Content.ReadAsStringAsync();
             RecipeListResponse result = await response.Content.ReadFromJsonAsync<RecipeListResponse>();
+            double quotaLeft = double.Parse(response.Headers.GetValues("X-API-Quota-Left").Single());
 
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Made api call with ingredients: {string.Join(";", ingredients)}");
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Recieved {result.Results.Count()} results.");
+            Console.WriteLine($"{nameof(GetRecipesAsync)}: Quota left {quotaLeft}");
 
-            return result.Results.OrderByDescending(x => x.UsedIngredientCount).ThenBy(x => x.MissedIngredientCount).ThenByDescending(x => x.AggregateLikes)
-                .Select(x => MapRecipe(x));
+            List<Recipe> recipes = result.Results.OrderByDescending(x => x.UsedIngredientCount).ThenBy(x => x.MissedIngredientCount).ThenByDescending(x => x.AggregateLikes)
+                .Select(x => MapRecipe(x)).ToList();
+            return (recipes, quotaLeft);
         }
 
         private static Recipe MapRecipe(RecipeResponse response)
@@ -68,7 +70,7 @@ namespace Shared
                 Name = response.Title,
                 Summary = response.Summary,
                 Url = response.SpoonacularSourceUrl,
-                ImageUrl = response.Image,
+                ImageUrl = HelperService.GetImageUrl(response.Id),
                 MissedIngredients = response.MissedIngredients.Select(x => MapRecipeName(x)).ToList(),
                 UnusedIngredients = response.UnusedIngredients.Select(x => MapRecipeName(x)).ToList(),
                 UsedIngredients = response.UsedIngredients.Select(x => MapRecipeName(x)).ToList(),
