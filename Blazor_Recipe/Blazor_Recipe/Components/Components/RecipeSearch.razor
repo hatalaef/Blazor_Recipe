@@ -1,30 +1,31 @@
-﻿<MudPaper Elevation="5">
-    <MudGrid Class="pa-4 mud-height-full">
+﻿
+<MudGrid Class="pa-4 mud-height-full">
 
-        <MudItem xs="8">
-            <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text" />
-        </MudItem>
+    <MudItem xs="8">
+        <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text" />
+    </MudItem>
+    <MudItem xs="4">
+        <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips" EndIcon="@Icons.Material.Filled.Add">Add ingredient </MudButton>
+    </MudItem>
 
-        <MudItem xs="4">
-            <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips" EndIcon="@Icons.Material.Filled.Add">Add ingredient </MudButton>
-        </MudItem>
-        <MudItem xs="12">
-            <MudChipSet AllClosable="true" OnClose="ClosedChips">
-                @foreach (string value in chipValues)
-                {
-                    <MudChip Text="@value" Color="Color.Primary" />
-                }
-            </MudChipSet>
-        </MudItem>
-        <MudItem xs="8"></MudItem>
-        <MudItem xs="4">
-            <MudButton Variant=" Variant.Filled" Color="Color.Primary" OnClick="@(() => SearchIngredients())">Search by ingredients</MudButton>
-        </MudItem>
-    </MudGrid>
-</MudPaper>
+    <MudItem xs="12">
+        <MudChipSet AllClosable="true" OnClose="ClosedChips">
+            @foreach (string value in chipValues)
+            {
+                <MudChip Text="@value" Color="Color.Primary" />
+            }
+        </MudChipSet>
+    </MudItem>
+
+    <MudItem xs="8"></MudItem>
+    <MudItem xs="4">
+        <MudButton Variant=" Variant.Filled" Color="Color.Primary" OnClick="@(() => SearchIngredients())">Search by ingredients</MudButton>
+    </MudItem>
+
+</MudGrid>
+
 
 @code {
-    private int chipIndex = 0;
     private List<string> chipValues = new List<string>();
     private string textValue { get; set; }
 

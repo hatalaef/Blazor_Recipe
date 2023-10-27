@@ -1,4 +1,5 @@
 ﻿using Shared.Models;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -51,7 +52,7 @@ namespace Shared
 
             response.EnsureSuccessStatusCode();
             RecipeListResponse result = await response.Content.ReadFromJsonAsync<RecipeListResponse>();
-            double quotaLeft = double.Parse(response.Headers.GetValues("X-API-Quota-Left").Single());
+            double quotaLeft = GetQuotaFromHeader(response.Headers);
 
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Made api call with ingredients: {string.Join(";", ingredients)}");
             Console.WriteLine($"{nameof(GetRecipesAsync)}: Recieved {result.Results.Count()} results.");
@@ -60,6 +61,24 @@ namespace Shared
             List<Recipe> recipes = result.Results.OrderByDescending(x => x.UsedIngredientCount).ThenBy(x => x.MissedIngredientCount).ThenByDescending(x => x.AggregateLikes)
                 .Select(x => MapRecipe(x)).ToList();
             return (recipes, quotaLeft);
+        }
+
+        public async Task<double> GetQuota()
+        {
+            string theUrl = $@"https://api.spoonacular.com/food/converse/suggest?query=tell&number=1&apiKey={apiKey}";
+
+            Console.WriteLine($"{nameof(GetQuota)}: Making http request: {theUrl}");
+
+            using HttpRequestMessage message = new(HttpMethod.Get, new Uri(theUrl));
+
+            HttpResponseMessage response = await _httpClient.SendAsync(message);
+
+            response.EnsureSuccessStatusCode();
+            double quotaLeft = GetQuotaFromHeader(response.Headers);
+
+            Console.WriteLine($"{nameof(GetQuota)}: Quota left {quotaLeft}");
+
+            return quotaLeft;
         }
 
         private static Recipe MapRecipe(RecipeResponse response)
@@ -80,6 +99,11 @@ namespace Shared
         private static string MapRecipeName(IngredientResponse response)
         {
             return response.Name;
+        }
+
+        private static double GetQuotaFromHeader(HttpResponseHeaders headers)
+        {
+            return double.Parse(headers.GetValues("X-API-Quota-Left").Single());
         }
     }
 }
