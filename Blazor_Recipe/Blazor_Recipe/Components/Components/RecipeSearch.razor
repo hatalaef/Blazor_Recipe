@@ -1,15 +1,17 @@
-﻿
+﻿@using FluentValidation.Results
+
 <MudGrid Class="pa-4 mud-height-full">
 
-    <MudItem xs="8">
-        <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text" />
-    </MudItem>
-    <MudItem xs="4">
-        <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips" EndIcon="@Icons.Material.Filled.Add">Add ingredient </MudButton>
-    </MudItem>
-
+    <MudForm @ref="@form">
+        <MudItem xs="8">
+            <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text" Validation="@(ingredientValidator.Validation)" />
+        </MudItem>
+        <MudItem xs="4">
+            <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips" EndIcon="@Icons.Material.Filled.Add">Add ingredient </MudButton>
+        </MudItem>
+    </MudForm>
     <MudItem xs="12">
-        <MudChipSet AllClosable="true" OnClose="ClosedChips">
+        <MudChipSet AllClosable="true" OnClose="ClosedChips" @bind-Value="chipValues">
             @foreach (string value in chipValues)
             {
                 <MudChip Text="@value" Color="Color.Primary" />
@@ -27,7 +29,10 @@
 
 @code {
     private List<string> chipValues = new List<string>();
-    private string textValue { get; set; }
+    private string textValue { get; set; } = string.Empty;
+    private IngredientValidator ingredientValidator = new();
+    private IngredientListValidator ingredientListValidator = new();
+    private MudForm form;
 
     [Parameter]
     public EventCallback<List<string>> SearchIngredientsCallback { get; set; }
@@ -36,13 +41,22 @@
     {
         await SearchIngredientsCallback.InvokeAsync(chipValues);
     }
-    private void AddChips()
+    private async Task AddChips()
     {
-        chipValues.Add(textValue);
-        textValue = string.Empty;
+
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            chipValues.Add(textValue);
+            textValue = string.Empty;
+        }
+
+        Console.WriteLine($"chip values: {string.Join(";", chipValues.Select(x => x))}");
     }
     private void ClosedChips(MudChip chip)
     {
         chipValues.Remove(chip.Text);
     }
+
 }
