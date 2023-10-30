@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Models
+﻿namespace Shared.Models
 {
     public class IngredientList
     {
-        public IEnumerable<string> Ingredients { get; set; }
+        public List<string> Ingredients { get; set; }
+
+        public string SelectedIngredient { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Shared.Validators
         public IngredientListValidator()
         {
             RuleFor(x => x).NotEmpty();
+            RuleFor(x => x.SelectedIngredient).NotEmpty();
             RuleForEach(x => x.Ingredients).SetValidator(new IngredientValidator());
         }
 
