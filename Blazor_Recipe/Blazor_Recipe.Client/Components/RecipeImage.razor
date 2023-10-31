@@ -1,9 +1,7 @@
-﻿@page "/details/{RecipeId:int}/{RecipeName}"
-@attribute [RenderModeInteractiveAuto]
-@using Shared.Models
+﻿@using Shared.Models
 
-<PageTitle>@RecipeName</PageTitle>
 
+<MudText Typo="Typo.h5">Render Mode: @RenderMode</MudText>
 
     @if (!showImage)
 {
@@ -12,13 +10,14 @@
 else
 {
     <div>
-        <div Style="position: absolute; top: 40%; left:50%; transform: translate(-50%, -50%);">
+        @* <div Style="position: absolute; top: 40%; left:50%; transform: translate(-50%, -50%);"> *@
+        <div>
             <MudImage Src="@Shared.HelperService.GetImageUrl(RecipeId)" Class="d-block" Style="margin-left: auto; margin-right: auto;" Fluid="true" />
             <MudText Typo="Typo.h4" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Bon Appetit!</MudText>
             <MudText Typo="Typo.h5" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Enjoy your @RecipeName</MudText>
             </div>
 
-            <MudImage Elevation="3" Src="images/food-366875.jpg" Fluid="true" Height="3000" Width="5000" />
+            @* <MudImage Elevation="3" Src="images/food-366875.jpg" Fluid="true" Height="3000" Width="5000" /> *@
 
         </div>
 }
@@ -27,6 +26,8 @@ else
     public string RecipeName { get; set; }
     [Parameter]
     public int RecipeId { get; set; }
+    [Parameter]
+    public string RenderMode { get; set; }
 
     private bool showImage = false;
 
@@ -34,12 +35,12 @@ else
     {
         ArgumentNullException.ThrowIfNull(RecipeName);
         ArgumentNullException.ThrowIfNull(RecipeId);
-
+        ArgumentNullException.ThrowIfNull(RenderMode);
     }
 
     private void ButtonClick()
     {
-        Console.WriteLine("Clicking a button. I'm on the client!");
+        Console.WriteLine($"Clicking a button on render mode {@RenderMode}.");
         showImage = true;
     }
 

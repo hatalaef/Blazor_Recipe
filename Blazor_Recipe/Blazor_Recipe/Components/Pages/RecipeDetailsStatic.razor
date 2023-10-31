@@ -1,0 +1,23 @@
+﻿@page "/details_static/{RecipeId:int}/{RecipeName}"
+@using Blazor_Recipe.Client.Components
+
+<PageTitle>Static Details</PageTitle>
+
+
+
+<RecipeImage RecipeId="@RecipeId" RecipeName="@RecipeName" RenderMode="Static" />
+
+@code {
+    [Parameter]
+    public string RecipeName { get; set; }
+    [Parameter]
+    public int RecipeId { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        ArgumentNullException.ThrowIfNull(RecipeName);
+        ArgumentNullException.ThrowIfNull(RecipeId);
+
+    }
+}

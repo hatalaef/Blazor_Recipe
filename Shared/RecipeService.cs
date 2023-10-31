@@ -17,11 +17,10 @@ namespace Shared
         }
 
         private const string apiKey = "c71c3bdaa5e645a5b0b283e0a0d6ed57";
-        private string url = $@"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&includeIngredients=milk&addRecipeInformation=true";
 
         public async Task<IEnumerable<Recipe>> GetRecipesAsync_Fake(List<string> ingredients)
         {
-            await Task.Delay(1000 * 1);
+            await Task.Delay(1000 * 2);
 
             string json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "SampleResponse.json"));
 
