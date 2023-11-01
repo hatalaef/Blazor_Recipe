@@ -1,26 +1,24 @@
 ﻿@using Shared.Models
 
+<div style="text-align: center" class="mud-border-primary border-2 pa-4">
+    <MudText Typo="Typo.h4" Style="@($"color:var(--mud-palette-primary-darken);")">Render Mode: @RenderMode</MudText>
 
-<MudText Typo="Typo.h5">Render Mode: @RenderMode</MudText>
-
-    @if (!showImage)
-{
-    <MudButton IconSize="Size.Large" ButtonType="ButtonType.Button" OnClick="ButtonClick" Color="Color.Primary" Variant="Variant.Filled">Click me</MudButton>
-}
-else
-{
-    <div>
-        @* <div Style="position: absolute; top: 40%; left:50%; transform: translate(-50%, -50%);"> *@
-        <div>
-            <MudImage Src="@Shared.HelperService.GetImageUrl(RecipeId)" Class="d-block" Style="margin-left: auto; margin-right: auto;" Fluid="true" />
-            <MudText Typo="Typo.h4" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Bon Appetit!</MudText>
-            <MudText Typo="Typo.h5" Align="Align.Center" Style="@($"color:var(--mud-palette-primary-lighten);")"> Enjoy your @RecipeName</MudText>
+        @if (!showImage)
+    {
+        <MudButton IconSize="Size.Large" ButtonType="ButtonType.Button" OnClick="ButtonClick" Color="Color.Primary" Variant="Variant.Filled">Click me</MudButton>
+    }
+    else
+    {
+        <MudImage Class="recipe-image" Src="@Shared.HelperService.GetImageUrl(RecipeId)" Fluid="true" />
+        <div Style="@($"color:var(--mud-palette-primary-lighten);")">
+            <MudText Typo="Typo.h4"> Bon Appetit!</MudText>
+            <MudText Typo="Typo.h5"> Enjoy your @RecipeName</MudText>
             </div>
 
-            @* <MudImage Elevation="3" Src="images/food-366875.jpg" Fluid="true" Height="3000" Width="5000" /> *@
 
-        </div>
-}
+    }
+
+</div>
 @code {
     [Parameter]
     public string RecipeName { get; set; }
@@ -40,7 +38,7 @@ else
 
     private void ButtonClick()
     {
-        Console.WriteLine($"Clicking a button on render mode {@RenderMode}.");
+        Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: Clicking a button on render mode {@RenderMode}.");
         showImage = true;
     }
 

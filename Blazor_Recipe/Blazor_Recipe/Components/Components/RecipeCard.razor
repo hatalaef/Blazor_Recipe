@@ -13,14 +13,8 @@
                 </MudItem>
                 <MudItem sm="5" xs="3">
                     <MudImage Src=@Recipe.ImageUrl Class="recipe-image" Style="@($"border-color:var(--mud-palette-primary-darken);")" Fluid="true" />
-                    <MudLink Href="@($"/details_wasm/{Recipe.Id}/{Recipe.Name}")" Underline="Underline.Hover">
-                        <MudText Align="Align.Center">Details - WASM</MudText>
-                    </MudLink>
-                    <MudLink Href="@($"/details_server/{Recipe.Id}/{Recipe.Name}")" Underline="Underline.Hover">
-                        <MudText Align="Align.Center">Details - Server</MudText>
-                    </MudLink>
-                    <MudLink Href="@($"/details_static/{Recipe.Id}/{Recipe.Name}")" Underline="Underline.Hover">
-                        <MudText Align="Align.Center">Details - Static</MudText>
+                    <MudLink Href="@($"/details/{Recipe.Id}/{Recipe.Name}")" Underline="Underline.Hover">
+                        <MudText Align="Align.Center">Details</MudText>
                     </MudLink>
                 </MudItem>
                 <MudItem xs="4">

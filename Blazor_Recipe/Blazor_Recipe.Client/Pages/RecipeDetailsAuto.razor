@@ -1,0 +1,28 @@
+﻿@page "/details_auto/{RecipeId:int}/{RecipeName}"
+@using Blazor_Recipe.Client.Components
+@* @attribute [RenderModeInteractiveServer] *@
+
+<PageTitle>Details - @RecipeName</PageTitle>
+
+    <div style="justify-content: center">
+        <RecipeImage RecipeId="@RecipeId"
+                     RecipeName="@RecipeName"
+                     RenderMode="@nameof(RenderMode.InteractiveAuto)"
+                     @rendermode="RenderMode.InteractiveAuto" />
+
+    </div>
+
+    @code {
+    [Parameter]
+    public string RecipeName { get; set; }
+    [Parameter]
+    public int RecipeId { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        ArgumentNullException.ThrowIfNull(RecipeName);
+        ArgumentNullException.ThrowIfNull(RecipeId);
+
+    }
+}

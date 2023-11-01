@@ -36,6 +36,6 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(RecipeDetailsWASM).Assembly);
+    .AddAdditionalAssemblies(typeof(RecipeDetails).Assembly);
 
 app.Run();
