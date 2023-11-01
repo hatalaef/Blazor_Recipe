@@ -2,35 +2,41 @@
 
 <MudGrid Class="pa-4 mud-height-full">
 
-    <MudForm Model="ingredientList" @ref="@form" Validation="@(ingredientListValidator.Validation)">
+    <MudForm @ref="@form">
         <MudItem xs="8">
-            <MudTextField @bind-Value="ingredientList.SelectedIngredient" Label="Ingredient" Variant="Variant.Text" For="@(() => ingredientList.SelectedIngredient)" />
+            <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text"
+                          Validation="@(ingredientValidator.Validation)" />
         </MudItem>
         <MudItem xs="4">
-            <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips" EndIcon="@Icons.Material.Filled.Add">Add ingredient </MudButton>
+            <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips"
+                       EndIcon="@Icons.Material.Filled.Add">
+                Add ingredient
+            </MudButton>
         </MudItem>
     </MudForm>
     <MudItem xs="12">
-        <MudChipSet AllClosable="true" OnClose="ClosedChips" @bind-Value="ingredientList">
-            @foreach (string value in ingredientList.Ingredients)
+        <MudChipSet AllClosable="true" OnClose="ClosedChips" @bind-Value="chipValues">
+            @foreach (string value in chipValues)
             {
                 <MudChip Text="@value" Color="Color.Primary" />
             }
         </MudChipSet>
-        @*         <ValidationMessage For="() => ingredientList.Ingredients" />
-        *@
     </MudItem>
 
     <MudItem xs="8"></MudItem>
     <MudItem xs="4">
-        <MudButton Variant=" Variant.Filled" Color="Color.Primary" OnClick="@(() => SearchIngredients())">Search by ingredients</MudButton>
+        <MudButton Variant=" Variant.Filled" Color="Color.Primary"
+                   OnClick="@(() => SearchIngredients())">
+            Search by ingredients
+        </MudButton>
     </MudItem>
 
 </MudGrid>
 
 
 @code {
-    private Shared.Models.IngredientList ingredientList = new() { Ingredients = new List<string> { }, SelectedIngredient = string.Empty };
+    private List<string> chipValues = new List<string>();
+    private string textValue { get; set; } = string.Empty;
     private IngredientListValidator ingredientListValidator = new();
     private MudForm form;
 
@@ -39,25 +45,24 @@
 
     private async Task SearchIngredients()
     {
-        await SearchIngredientsCallback.InvokeAsync(ingredientList.Ingredients.ToList());
+        await SearchIngredientsCallback.InvokeAsync(chipValues);
     }
     private async Task AddChips()
     {
-        Console.WriteLine($"selected: {ingredientList.SelectedIngredient}");
 
         await form.Validate();
 
         if (form.IsValid)
         {
-            ingredientList.Ingredients.Add(ingredientList.SelectedIngredient);
-            ingredientList.SelectedIngredient = string.Empty;
+            chipValues.Add(textValue);
+            textValue = string.Empty;
         }
 
-        Console.WriteLine($"chip values: {string.Join(";", ingredientList.Ingredients.Select(x => x))}");
+        Console.WriteLine($"chip values: {string.Join(";", chipValues.Select(x => x))}");
     }
     private void ClosedChips(MudChip chip)
     {
-        ingredientList.Ingredients.Remove(chip.Text);
+        chipValues.Remove(chip.Text);
     }
 
 }

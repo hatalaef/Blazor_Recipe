@@ -26,7 +26,9 @@
     <div class="mt-8" />
     @if (_recipes is null)
     {
-        <MudText Typo="Typo.h5">Loading Recipes...</MudText>
+        <MudPaper Class="pa-8">
+            <MudText Align="Align.Center" Typo="Typo.h4">Loading Recipes...</MudText>
+        </MudPaper>
     }
     else
     {
