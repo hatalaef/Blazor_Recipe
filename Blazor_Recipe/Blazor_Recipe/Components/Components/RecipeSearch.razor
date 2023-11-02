@@ -2,18 +2,21 @@
 
 <MudGrid Class="pa-4 mud-height-full">
 
-    <MudForm @ref="@form">
-        <MudItem xs="8">
-            <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text"
-                          Validation="@(ingredientValidator.Validation)" />
-        </MudItem>
-        <MudItem xs="4">
-            <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips"
-                       EndIcon="@Icons.Material.Filled.Add">
-                Add ingredient
-            </MudButton>
-        </MudItem>
-    </MudForm>
+    <MudItem xs="12">
+        <MudForm @ref="@form">
+            <MudGrid>
+                <MudItem xs="8">
+                    <MudTextField @bind-Value="textValue" Label="Ingredient" Variant="Variant.Text" />
+                </MudItem>
+                <MudItem xs="4">
+                    <MudButton Variant=" Variant.Text" Color="Color.Primary" OnClick="AddChips"
+                               EndIcon="@Icons.Material.Filled.Add">
+                        Add ingredient
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </MudItem>
     <MudItem xs="12">
         <MudChipSet AllClosable="true" OnClose="ClosedChips" @bind-Value="chipValues">
             @foreach (string value in chipValues)
