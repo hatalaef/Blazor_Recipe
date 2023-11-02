@@ -1,6 +1,7 @@
 using Blazor_Recipe.Client.Pages;
 using Blazor_Recipe.Components;
 using MudBlazor.Services;
+using Serilog;
 using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddRazorComponents()
 //services
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient<RecipeService>();
+
+Log.Logger = HelperService.CreateLogger();
 
 var app = builder.Build();
 

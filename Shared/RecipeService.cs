@@ -1,4 +1,6 @@
-﻿using Shared.Models;
+﻿using Serilog;
+using Serilog.Core;
+using Shared.Models;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -30,8 +32,8 @@ namespace Shared
             };
             RecipeListResponse result = JsonSerializer.Deserialize<RecipeListResponse>(json, options);
 
-            Console.WriteLine($"{nameof(GetRecipesAsync_Fake)}: Made a fake api call with sample ingredients potato, onion, leek (real ingredients were ignored)");
-            Console.WriteLine($"{nameof(GetRecipesAsync_Fake)}: Received {result.Results.Count()} results.");
+            Log.Logger.Debug($"{nameof(GetRecipesAsync_Fake)}: Made a fake api call with sample ingredients potato, onion, leek (real ingredients were ignored)");
+            Log.Logger.Debug($"{nameof(GetRecipesAsync_Fake)}: Received {result.Results.Count()} results.");
 
             return result.Results.Select(x => MapRecipe(x));
         }
@@ -43,7 +45,7 @@ namespace Shared
             string ingredientList = string.Join(",", ingredients);
             string theUrl = $@"https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&fillIngredients=true&sort=max-used-ingredients&instructionsRequired=true&limitLicense=true&number={MaxRecipes}&apiKey={apiKey}&includeIngredients={ingredientList}";
 
-            Console.WriteLine($"{nameof(GetRecipesAsync)}: Making http request: {theUrl}");
+            Log.Logger.Debug($"{nameof(GetRecipesAsync)}: Making http request: {theUrl}");
 
             using HttpRequestMessage message = new(HttpMethod.Get, new Uri(theUrl));
 
@@ -53,9 +55,9 @@ namespace Shared
             RecipeListResponse result = await response.Content.ReadFromJsonAsync<RecipeListResponse>();
             double quotaLeft = GetQuotaFromHeader(response.Headers);
 
-            Console.WriteLine($"{nameof(GetRecipesAsync)}: Made api call with ingredients: {string.Join(";", ingredients)}");
-            Console.WriteLine($"{nameof(GetRecipesAsync)}: Recieved {result.Results.Count()} results.");
-            Console.WriteLine($"{nameof(GetRecipesAsync)}: Quota left {quotaLeft}");
+            Log.Logger.Debug($"{nameof(GetRecipesAsync)}: Made api call with ingredients: {string.Join(";", ingredients)}");
+            Log.Logger.Debug($"{nameof(GetRecipesAsync)}: Recieved {result.Results.Count()} results.");
+            Log.Logger.Debug($"{nameof(GetRecipesAsync)}: Quota left {quotaLeft}");
 
             List<Recipe> recipes = result.Results.OrderByDescending(x => x.UsedIngredientCount).ThenBy(x => x.MissedIngredientCount).ThenByDescending(x => x.AggregateLikes)
                 .Select(x => MapRecipe(x)).ToList();
@@ -66,7 +68,7 @@ namespace Shared
         {
             string theUrl = $@"https://api.spoonacular.com/food/converse/suggest?query=tell&number=1&apiKey={apiKey}";
 
-            Console.WriteLine($"{nameof(GetQuota)}: Making http request: {theUrl}");
+            Log.Logger.Debug($"{nameof(GetQuota)}: Making http request: {theUrl}");
 
             using HttpRequestMessage message = new(HttpMethod.Get, new Uri(theUrl));
 
@@ -75,7 +77,7 @@ namespace Shared
             response.EnsureSuccessStatusCode();
             double quotaLeft = GetQuotaFromHeader(response.Headers);
 
-            Console.WriteLine($"{nameof(GetQuota)}: Quota left {quotaLeft}");
+            Log.Logger.Debug($"{nameof(GetQuota)}: Quota left {quotaLeft}");
 
             return quotaLeft;
         }

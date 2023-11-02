@@ -38,7 +38,7 @@
 
     private void ButtonClick()
     {
-        Console.WriteLine($"{DateTime.Now.ToLongTimeString()}: Clicking a button on render mode {@RenderMode}.");
+        Log.Logger.Information($"{DateTime.Now.ToLongTimeString()}: Clicking a button on render mode {@RenderMode}.");
         showImage = true;
     }
 

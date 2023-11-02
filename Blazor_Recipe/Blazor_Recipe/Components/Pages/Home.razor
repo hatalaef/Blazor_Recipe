@@ -67,7 +67,7 @@
 
     private async Task GetRecipes(List<string> ingredients)
     {
-        Console.WriteLine($"{nameof(GetRecipes)}: Got ingredients: {string.Join(";", ingredients)}");
+        Log.Logger.Debug($"{nameof(GetRecipes)}: Got ingredients: {string.Join(";", ingredients)}");
         _recipes = null;
         if (useFakeApiCall)
         {
