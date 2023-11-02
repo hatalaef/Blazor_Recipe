@@ -33,11 +33,21 @@
     else
     {
 
-        @foreach (var recipe in _recipes)
+        @if (noRecipesFound)
         {
-            <div class="mt-4">
-                <RecipeCard Recipe="recipe" />
-            </div>
+            <MudPaper Class="pa-8">
+                <MudText Align="Align.Center" Typo="Typo.h4">No recipes found</MudText>
+            </MudPaper>
+        }
+        else
+        {
+            @foreach (var recipe in _recipes)
+            {
+                <div class="mt-4">
+                    <RecipeCard Recipe="recipe" />
+                </div>
+            }
+
         }
     }
 </MudContainer>
@@ -46,6 +56,7 @@
     private IEnumerable<Shared.Models.Recipe>? _recipes;
     private bool useFakeApiCall { get; set; } = true;
     private string? apiQuota { get; set; }
+    private bool noRecipesFound = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,7 +79,7 @@
             _recipes = result.Recipes;
             SetQuotaString(result.ApiQuota);
         }
-
+        noRecipesFound = _recipes.Count() == 0;
     }
 
     private void SetQuotaString(double? quota)
