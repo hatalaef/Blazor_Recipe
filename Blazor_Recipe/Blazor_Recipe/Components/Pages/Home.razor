@@ -2,7 +2,7 @@
 @inject Shared.RecipeService RecipeService
 <PageTitle>Home</PageTitle>
 
-@attribute [RenderModeInteractiveServer(false)]
+@rendermode InteractiveServer
 @attribute [StreamRendering(true)]
 
 <MudContainer MaxWidth="MaxWidth.Large">
@@ -10,15 +10,15 @@
     <MudPaper Elevation="5">
         <RecipeSearch SearchIngredientsCallback="@GetRecipes" />
         <div class="mt-4 pa-4">
-            @if (apiQuota is null)
+            @if (_apiQuota is null)
             {
                 <MudText Typo="Typo.h5">Loading...</MudText>
             }
             else
             {
-                <MudRadioGroup @bind-SelectedOption="@useFakeApiCall">
+                <MudRadioGroup @bind-SelectedOption="@_useFakeApiCall">
                     <MudRadio Option="@(true)" Color="Color.Primary">Use Fake API Call (ingredients ignored)</MudRadio>
-                    <MudRadio Option="@(false)" Color="Color.Primary">Use Real API Call (has a daily quota) @apiQuota</MudRadio>
+                    <MudRadio Option="@(false)" Color="Color.Primary">Use Real API Call (has a daily quota) @_apiQuota</MudRadio>
                     </MudRadioGroup>
             }
         </div>
@@ -33,7 +33,7 @@
     else
     {
 
-        @if (noRecipesFound)
+        @if (_noRecipesFound)
         {
             <MudPaper Class="pa-8">
                 <MudText Align="Align.Center" Typo="Typo.h4">No recipes found</MudText>
@@ -54,9 +54,9 @@
 
 @code {
     private IEnumerable<Shared.Models.Recipe>? _recipes;
-    private bool useFakeApiCall { get; set; } = true;
-    private string? apiQuota { get; set; }
-    private bool noRecipesFound = false;
+    private bool _useFakeApiCall { get; set; } = true;
+    private string? _apiQuota { get; set; }
+    private bool _noRecipesFound = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,7 +69,7 @@
     {
         Log.Logger.Debug($"{nameof(GetRecipes)}: Got ingredients: {string.Join(";", ingredients)}");
         _recipes = null;
-        if (useFakeApiCall)
+        if (_useFakeApiCall)
         {
             _recipes = (await RecipeService.GetRecipesAsync_Fake(ingredients)).ToList();
         }
@@ -79,14 +79,14 @@
             _recipes = result.Recipes;
             SetQuotaString(result.ApiQuota);
         }
-        noRecipesFound = _recipes.Count() == 0;
+        _noRecipesFound = _recipes.Count() == 0;
     }
 
     private void SetQuotaString(double? quota)
     {
         if (quota != null)
         {
-            apiQuota = $": {quota}/150 left";
+            _apiQuota = $": {quota}/150 left";
         }
     }
 }
