@@ -4,13 +4,22 @@
     <MudGrid Class="pa-4 mud-height-full">
 
         <MudItem xs="8">
-            <MudTextField @bind-Value="ingredientList.SelectedIngredient" Label="Ingredient" Variant="Variant.Text"
+            <MudTextField @bind-Value="ingredientList.SelectedIngredient"
+                          Label="Ingredient" Variant="Variant.Text" TextUpdateSuppression="false"
                           For="@(() => ingredientList.SelectedIngredient)" />
         </MudItem>
         <MudItem xs="4">
             <MudButton ButtonType="ButtonType.Submit" Variant=" Variant.Text" Color="Color.Primary"
                        EndIcon="@Icons.Material.Filled.Add">
                 Add ingredient
+            </MudButton>
+        </MudItem>
+
+        <MudItem xs="8" />
+        <MudItem xs="4">
+            <MudButton Variant=" Variant.Text" Color="Color.Primary"
+                       EndIcon="@Icons.Material.Filled.Clear" OnClick="ClearChips">
+                Clear
             </MudButton>
         </MudItem>
 
@@ -52,7 +61,7 @@
     {
         await SearchIngredientsCallback.InvokeAsync(ingredientList.Ingredients.ToList());
     }
-    private async Task AddChips()
+    private void AddChips()
     {
         ingredientList.Ingredients.Add(ingredientList.SelectedIngredient);
         ingredientList.SelectedIngredient = string.Empty;
@@ -60,6 +69,12 @@
     private void ClosedChips(MudChip chip)
     {
         ingredientList.Ingredients.Remove(chip.Text);
+    }
+
+    private void ClearChips()
+    {
+        ingredientList.Ingredients.Clear();
+        ingredientList.SelectedIngredient = string.Empty;
     }
 
 }

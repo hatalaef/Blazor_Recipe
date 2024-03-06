@@ -17,9 +17,13 @@
             else
             {
                 <MudRadioGroup @bind-SelectedOption="@_useFakeApiCall">
-                    <MudRadio Option="@(true)" Color="Color.Primary">Use Fake API Call (ingredients ignored)</MudRadio>
-                    <MudRadio Option="@(false)" Color="Color.Primary">Use Real API Call (has a daily quota) @_apiQuota</MudRadio>
-                    </MudRadioGroup>
+                    <MudRadio Option="@(true)" Color="Color.Primary">
+                        Use Fake API Call (ingredients ignored)
+                    </MudRadio>
+                    <MudRadio Option="@(false)" Color="Color.Primary">
+                        Use Real API Call (has a daily quota) @_apiQuota
+                    </MudRadio>
+                </MudRadioGroup>
             }
         </div>
     </MudPaper>
@@ -71,7 +75,7 @@
         _recipes = null;
         if (_useFakeApiCall)
         {
-            _recipes = (await RecipeService.GetRecipesAsync_Fake(ingredients)).ToList();
+            _recipes = (await RecipeService.GetRecipesAsync_Fake()).ToList();
         }
         else
         {

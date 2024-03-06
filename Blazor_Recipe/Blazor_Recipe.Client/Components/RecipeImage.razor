@@ -9,7 +9,7 @@
     }
     else
     {
-        <MudImage Class="recipe-image" Src="@Shared.HelperService.GetImageUrl(RecipeId)" Fluid="true" />
+        <MudImage Class="recipe-image" @onclick="ButtonClick" Src="@Shared.HelperService.GetImageUrl(RecipeId)" Fluid="true" />
         <div Style="@($"color:var(--mud-palette-primary-lighten);")">
             <MudText Typo="Typo.h4"> Bon Appetit!</MudText>
             <MudText Typo="Typo.h5"> Enjoy your @RecipeName</MudText>
@@ -39,7 +39,7 @@
     private void ButtonClick()
     {
         Log.Logger.Information($"{DateTime.Now.ToLongTimeString()}: Clicking a button on render mode {@RenderMode}.");
-        showImage = true;
+        showImage = !showImage;
     }
 
 }

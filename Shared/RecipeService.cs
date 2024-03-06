@@ -20,7 +20,7 @@ namespace Shared
 
         private const string apiKey = "c71c3bdaa5e645a5b0b283e0a0d6ed57";
 
-        public async Task<IEnumerable<Recipe>> GetRecipesAsync_Fake(List<string> ingredients)
+        public async Task<IEnumerable<Recipe>> GetRecipesAsync_Fake()
         {
             await Task.Delay(1000 * 2);
 
