@@ -2,7 +2,7 @@
 @inject Shared.RecipeService RecipeService
 <PageTitle>Home</PageTitle>
 
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @attribute [StreamRendering(true)]
 
 <MudContainer MaxWidth="MaxWidth.Large">

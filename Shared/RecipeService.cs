@@ -18,7 +18,8 @@ namespace Shared
             _httpClient = client;
         }
 
-        private const string apiKey = "c71c3bdaa5e645a5b0b283e0a0d6ed57";
+        //need a free api key from here: https://spoonacular.com/food-api
+        private const string apiKey = "";
 
         public async Task<IEnumerable<Recipe>> GetRecipesAsync_Fake()
         {
